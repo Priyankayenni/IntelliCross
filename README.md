@@ -1,7 +1,7 @@
 # IntelliCross
 
 <p align="center">
-  <img src="docs/screenshots/intellicross-dashboard.svg" alt="IntelliCross dashboard overview" width="1000" />
+  <img src="docs/screenshots/live-dashboard.png" alt="Live IntelliCross dashboard" width="1000" />
 </p>
 
 <p align="center">
@@ -113,18 +113,14 @@ The app does not just show static information. It behaves like a live operations
 ## Screenshots and app previews
 
 <p align="center">
-  <img src="docs/screenshots/intellicross-dashboard.svg" alt="IntelliCross dashboard screenshot" width="1000" />
+  <img src="docs/screenshots/live-dashboard.png" alt="Live IntelliCross emergency operations dashboard" width="1000" />
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/intellicross-route.svg" alt="IntelliCross route and signal coordination" width="1000" />
+  <img src="docs/screenshots/live-mobile.png" alt="Live IntelliCross mobile dashboard" width="390" />
 </p>
 
-<p align="center">
-  <img src="docs/screenshots/intellicross-detection.svg" alt="IntelliCross detection preview" width="1000" />
-</p>
-
-> These preview graphics represent the live dashboard behavior and the image-analysis workflow used by the app. They are intentionally styled to mirror the actual control-center experience in a clean, presentation-friendly format.
+> These images were captured directly from the running IntelliCross frontend at `http://localhost:5173`. They show the real desktop and mobile dashboard, including vehicle monitoring, route visualization, traffic signals, hospital availability, live roadway feed, and incident timeline.
 
 ---
 
@@ -237,9 +233,8 @@ project/
 │       └── test_integration.py
 ├── docs/
 │   └── screenshots/
-│       ├── intellicross-dashboard.svg
-│       ├── intellicross-route.svg
-│       └── intellicross-detection.svg
+│       ├── live-dashboard.png
+│       └── live-mobile.png
 ├── .gitignore
 └── .bolt/
 ```
