@@ -1,104 +1,214 @@
-﻿# IntelliCross
+# IntelliCross
 
-IntelliCross is a smart emergency response and intelligent traffic monitoring platform designed to detect emergency vehicles in real time, prioritize route clearance, and support faster emergency response coordination. The system combines a modern React frontend, a FastAPI backend, and a YOLO-based detection pipeline to simulate and support situational awareness for emergency operations.
+<p align="center">
+  <img src="docs/screenshots/intellicross-dashboard.svg" alt="IntelliCross dashboard overview" width="1000" />
+</p>
 
-The project is built as a full-stack demo platform for emergency vehicle detection, traffic signal preemption, hospital routing, and control-room visualization. It is designed to help visualize how AI-assisted emergency response systems can improve response times, improve signal coordination, and support emergency dispatch decisions.
+<p align="center">
+  <strong>AI-powered emergency vehicle detection and response coordination platform</strong>
+</p>
 
-## Project Overview
+A real-time emergency operations dashboard designed to detect emergency vehicles, prioritize routing, support signal coordination, and help dispatch teams make faster response decisions. IntelliCross unifies a modern frontend control room, an intelligent Python backend, and a detection pipeline that can work with uploaded images and live operational data.
 
-The IntelliCross system includes:
-- A React dashboard for monitoring emergency vehicles and traffic conditions
-- Real-time traffic signal and hospital panel views
-- Emergency detection results with confidence scoring and bounding boxes
-- Simulated corridor-based emergency routing logic
-- Backend services for image-based detection and live alert processing
-- A Python AI pipeline for collecting, labeling, and training detection models
+---
 
-This project demonstrates a practical AI-powered emergency infrastructure concept for smart cities, emergency response, and transportation safety.
+## Why this project exists
 
-## Why This Project Matters
+Emergency response teams often lose critical time because of delays at intersections, congested corridors, poor hospital coordination, and limited situational awareness. IntelliCross is built to reduce that friction by combining:
 
-Emergency vehicles such as ambulances, fire trucks, and police vehicles often face delays caused by traffic congestion, poor route coordination, or signal delays. IntelliCross addresses this by creating a connected decision-support system that can:
-- detect emergency vehicles from camera feeds or images,
-- highlight them as high-priority objects,
-- display their location and route progress,
-- suggest hospitals or response corridors,
-- and support real-time operational awareness for traffic control teams.
+- computer vision-based emergency vehicle detection
+- live traffic and route status monitoring
+- hospital readiness awareness
+- signal preemption simulation for priority vehicles
+- operator and driver-centric views for faster decisions
 
-## Core Features
+This project is a full-stack demo and prototype with a strong control-room interface and practical emergency response logic.
 
-### 1. Emergency Vehicle Detection
-- Detects emergency classes such as ambulance, fire truck, police, and disaster vehicles
-- Uses YOLO-based object detection logic with confidence-aware predictions
-- Supports detection overlays on uploaded images and simulated video frames
-- Flags high-priority emergency detection cases visually
+---
 
-### 2. Real-Time Dashboard
-- Traffic signal panel with status indicators and countdowns
-- Emergency corridors and vehicle route tracking
-- Regional hospital information with bed availability and response times
-- Control-room style visual monitoring interface
+## Product overview
 
-### 3. Signals and Emergency Routing
-- Simulates traffic signals with preemption logic
-- Tracks vehicle proximity to intersections and corridor radius
-- Provides operational context for emergency vehicles moving through monitored zones
+IntelliCross is a smart traffic response system for urban emergency operations. It helps operators:
 
-### 4. Inference API
-- FastAPI endpoints for health checks, image detection, and alert workflows
-- Provides consistent JSON outputs for detection and system status
-- Supports both mock and model-based detection flows
+- detect vehicles such as ambulances, fire trucks, and police vehicles
+- track route and ETA to the nearest hospital
+- monitor signal states and emergency corridor activity
+- coordinate hospital alerts and response actions
+- visualize operational status in one live dashboard
 
-### 5. AI Data Pipeline
-- Collects publicly available emergency vehicle training data
-- Extracts frames and labels from video or image sources
-- Organizes a YOLO dataset structure
-- Trains or stubs a model for emergency detection workflows
+The platform is designed to feel like a real emergency command center without being tied to a single deployment environment.
 
-## System Architecture
+---
 
-The project is divided into two main parts:
+## System architecture
+
+### High-level architecture
+
+```mermaid
+flowchart LR
+    A[Camera Feed / User Upload] --> B[Frontend Dashboard]
+    B --> C[FastAPI Backend]
+    C --> D[Detection Engine]
+    D --> E[Emergency Classification]
+    E --> F[Alerting + Route Logic]
+    F --> G[Hospital & Signal Coordination]
+    G --> B
+```
+
+### End-to-end workflow
+
+| Layer | Responsibility | Key components |
+| --- | --- | --- |
+| Frontend | Control room UI, maps, route display, alerts, role switching | React, Vite, TypeScript, Tailwind |
+| Backend | API orchestration, request handling, service responses | FastAPI, Python |
+| Detection layer | Classifies emergency vehicles and extracts detections | YOLO-style inference, CV pipeline |
+| Data layer | Hospitals, signals, vehicle state, corridor logic | In-memory mock datasets + backend endpoints |
+| Operations layer | Alert prioritization, route recommendations | Dashboard logic, routing simulation |
+
+### Frontend and backend interaction
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend as React Frontend
+    participant API as FastAPI API
+    participant Model as Detection Engine
+    participant Ops as Alerts / Hospital Logic
+
+    User->>Frontend: Upload image / view live dashboard
+    Frontend->>API: POST /api/detect-image
+    API->>Model: Run inference
+    Model-->>API: Detections + confidence + bbox
+    API-->>Frontend: Response payload
+    Frontend->>Ops: Prioritize emergency vehicle
+    Ops-->>Frontend: Update route, signal, hospital panel
+```
+
+---
+
+## Real-time working model
+
+The app does not just show static information. It behaves like a live operations console:
+
+1. Vehicles are tracked from the dashboard with route metadata and distance-to-hospital values.
+2. Emergency signals and corridor data are displayed to show which route is active.
+3. Operators receive alert cards for critical or warning-level vehicle events.
+4. Hospital cards show availability, response times, and emergency contact data.
+5. A detection panel allows users to trigger an image analysis workflow and inspect bounding boxes and confidence scores.
+6. Driver and operator views let different teams use the same system in different contexts.
+
+### Live process flow
+
+| Step | Event | Result |
+| --- | --- | --- |
+| 1 | System loads dashboard | Operator sees active vehicles, hospitals, and live signals |
+| 2 | Vehicle identified | Emergency card appears with confidence and route data |
+| 3 | Detection check runs | Bounding boxes and class summary appear |
+| 4 | Route is assigned | Destination hospital and ETA are computed |
+| 5 | Signal preemption is requested | Green wave priority is simulated |
+| 6 | Hospital is alerted | Contact information and response coordination are surfaced |
+
+---
+
+## Screenshots and app previews
+
+<p align="center">
+  <img src="docs/screenshots/intellicross-dashboard.svg" alt="IntelliCross dashboard screenshot" width="1000" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/intellicross-route.svg" alt="IntelliCross route and signal coordination" width="1000" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/intellicross-detection.svg" alt="IntelliCross detection preview" width="1000" />
+</p>
+
+> These preview graphics represent the live dashboard behavior and the image-analysis workflow used by the app. They are intentionally styled to mirror the actual control-center experience in a clean, presentation-friendly format.
+
+---
+
+## Key features
+
+### Emergency vehicle detection
+
+- Supports ambulance, fire truck, police, and disaster-related emergency classes
+- Uses confidence-based detection scoring
+- Shows bounding boxes around high-priority objects
+- Returns structured JSON for front-end UI rendering and operational decisions
+
+### Command center dashboard
+
+- Operator overview with emergency counts, route optimization, and system status
+- Active vehicle cards with live route and ETA details
+- Hospital availability cards with beds, specializations, and emergency numbers
+- Route map visualization for corridor-based operations
+
+### Signal coordination
+
+- Simulated traffic signal states and countdown behavior
+- Corridor priority tracking for emergency movement
+- Green-wave style routing logic for emergency vehicles
+
+### Contact and escalation workflow
+
+- Contact channels for hospitals and drivers
+- Emergency call, SMS, WhatsApp, and email route generation
+- Response coordination for dispatch and receiving institutions
+
+### Driver view
+
+- Route-focused interface for emergency drivers
+- ETA and corridor visibility
+- Driver-friendly status and emergency messaging flow
+
+---
+
+## Technology stack
 
 ### Frontend
-Built with React + Vite + TypeScript and styled with Tailwind CSS.
 
-Main frontend responsibilities:
-- display live emergency dashboard information,
-- render maps and traffic panels,
-- show vehicle cards and hospital cards,
-- overlay detection boxes on images,
-- allow users to upload images for demo detection.
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+- Leaflet / React Leaflet
+- Lucide icons
 
 ### Backend
-Built with Python and FastAPI.
 
-Main backend responsibilities:
-- serve API routes,
-- process uploaded images or streams,
-- execute detection logic,
-- expose health checks and system metrics,
-- support alerting and monitoring flows.
+- Python
+- FastAPI
+- Uvicorn
+- OpenCV
+- NumPy
+- Pillow
+- Pydantic
 
-## Project Structure
+### AI / detection
+
+- YOLO-style object detection pipeline
+- Model loading fallback logic
+- Mock detection pipeline for demo deployments
+- Training-ready emergency vehicle classification workflow
+
+---
+
+## Project structure
 
 ```text
 project/
 ├── README.md
 ├── index.html
 ├── package.json
-├── package-lock.json
 ├── vite.config.ts
 ├── tsconfig.json
-├── tsconfig.app.json
-├── tsconfig.node.json
-├── postcss.config.js
-├── tailwind.config.js
-├── eslint.config.js
 ├── src/
 │   ├── App.tsx
-│   ├── main.tsx
 │   ├── data.ts
 │   ├── detection.ts
+│   ├── main.tsx
 │   ├── index.css
 │   └── components/
 │       ├── AlertTray.tsx
@@ -111,105 +221,46 @@ project/
 │       ├── LiveVideoFeed.tsx
 │       ├── RealTimeMap.tsx
 │       ├── TrafficSignalPanel.tsx
-│       ├── VehicleCard.tsx
-│
+│       └── VehicleCard.tsx
 ├── backend/
-│   ├── README.md
 │   ├── main.py
 │   ├── requirements.txt
+│   ├── README.md
 │   ├── pytest.ini
 │   ├── scripts/
-│   │   ├── __init__.py
 │   │   ├── collect_web_data.py
 │   │   ├── extract_frames.py
 │   │   └── train_model.py
 │   └── tests/
-│       ├── __init__.py
 │       ├── test_collector.py
 │       ├── test_extractor.py
 │       └── test_integration.py
-└── .gitignore
+├── docs/
+│   └── screenshots/
+│       ├── intellicross-dashboard.svg
+│       ├── intellicross-route.svg
+│       └── intellicross-detection.svg
+├── .gitignore
+└── .bolt/
 ```
 
-## Tech Stack
+---
 
-### Frontend
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Framer Motion
-- Leaflet and React Leaflet
-- Lucide React icons
+## Backend API overview
 
-### Backend
-- Python
-- FastAPI
-- Uvicorn
-- OpenCV
-- NumPy
-- Pillow
-- Pydantic
-- Ultralytics
-- PyTorch
+The FastAPI service exposes routes for:
 
-### AI / Detection Pipeline
-- YOLOv8-based object detection
-- Emergency vehicle classification
-- Mock detection mode for frontend demo operation
-- Training-ready dataset generation flow
+- `GET /health` — health check and model status
+- `GET /api/active-emergencies` — list active emergency vehicles
+- `GET /api/hospitals` — hospital metadata
+- `GET /api/signals` — signal status and priority flags
+- `GET /api/corridors` — corridor monitoring info
+- `POST /api/detect-image` — image-based detection
+- `POST /api/detect-stream` — stream/video-based detection
+- `POST /api/alerts` — create internal alert messages
+- `POST /api/contact` — log emergency contact actions
 
-## Application Workflow
-
-### 1. Frontend loads dashboard
-The application starts with a control-room dashboard showing:
-- emergency vehicles,
-- hospital availability,
-- traffic signals,
-- status cards,
-- live event logs.
-
-### 2. User uploads an image
-The detection panel allows the user to upload an image for analysis.
-
-### 3. Detection engine runs
-The system processes the image and identifies objects, such as:
-- ambulance,
-- fire_truck,
-- police,
-- car,
-- bus,
-- truck,
-- motorcycle,
-- pedestrian,
-- animal.
-
-### 4. Detection results are displayed
-The detection output includes:
-- class name,
-- confidence score,
-- bounding box coordinates,
-- severity/emergency flag,
-- top class summary.
-
-### 5. Emergency logic is surfaced
-If an emergency vehicle is detected, the UI highlights it and presents it as a high-priority signal for response coordination.
-
-## API Endpoints
-
-The backend exposes these core routes:
-
-- `GET /health` — returns health and model status
-- `POST /api/detect-image` — analyzes an uploaded image
-- `POST /api/detect-stream` — analyzes a video stream or uploaded video
-- `GET /api/hospitals` — returns known emergency hospitals
-- `GET /api/signals` — returns traffic signal data
-- `GET /api/corridors` — returns emergency corridor locations
-- `POST /api/alerts` — creates alert data
-- `POST /api/contact` — logs contact attempts
-- WebSocket endpoints for live alert streams and vehicle updates
-
-## Example Detection Output
+### Example detection response
 
 ```json
 {
@@ -232,111 +283,120 @@ The backend exposes these core routes:
 }
 ```
 
-## Data Pipeline Details
+---
 
-### 1. Data Collection
-The backend pipeline can collect images from Wikimedia Commons using a data collection script. It stores metadata such as:
-- source URL,
-- license,
-- collection timestamp,
-- hash for deduplication.
-
-### 2. Frame Extraction
-The extraction phase prepares image frames and organizes them for YOLO training. It also supports stub output if the full AI dependencies are not available.
-
-### 3. Training
-The model training script prepares a YOLO-based detector and writes outputs such as:
-- model weights,
-- training metrics,
-- logs and evaluation results.
-
-### 4. Inference
-Inference routes run detection on uploaded images or streams and return structured outputs for the frontend.
-
-## Setup Instructions
+## Setup and run
 
 ### Prerequisites
-- Node.js and npm
+
+- Node.js 18+
+- npm
 - Python 3.10+
 - Git
-- A browser for frontend testing
 
-### Frontend Setup
+### Frontend setup
+
 ```bash
 cd project
 npm install
 npm run dev -- --host 0.0.0.0
 ```
 
-Then open:
-- http://localhost:5173
+The frontend will run on:
 
-### Backend Setup
+- `http://localhost:5173`
+- or on LAN using the host binding if exposed on the network
+
+### Backend setup
+
 ```bash
 cd project/backend
 python -m venv venv
-.\venv\Scripts\activate
+source venv/bin/activate   # Linux/macOS
+# or on Windows:
+# venv\Scripts\activate
 pip install -r requirements.txt
-python -m uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Then open:
-- http://localhost:8000/docs
-- http://localhost:8000/health
+The backend health endpoint can be checked with:
 
-## Testing
-
-The backend includes unit and integration tests for:
-- collector logic,
-- frame extraction logic,
-- dataset generation,
-- API validation.
-
-Run tests with:
 ```bash
-cd project/backend
-.\venv\Scripts\python.exe -m pytest -v
+curl http://localhost:8000/health
 ```
 
-## Important Notes
+---
 
-### Network Access
-The project has been configured to work across local network access and browser environments beyond just localhost.
+## App behavior in practice
 
-### GitHub / Repo Notes
-The repository is intended to be used as a public or private project repo for AI-based emergency monitoring demo work. Generated environment folders like virtual environments and node_modules should remain ignored in Git.
+IntelliCross is designed to simulate the decision-making flow of a live emergency control room:
 
-### Model Behavior
-If a trained model is unavailable, the backend falls back to:
-- a base YOLO model,
-- or a mock detection mode for demos and UI testing.
+- the system identifies emergency vehicles,
+- routes them to the most suitable hospital,
+- shows route status and signal priority,
+- raises alerts for ambulance, fire, or police traffic,
+- gives dispatchers a single operational picture.
 
-## Future Enhancements
+This is especially useful for:
 
-Possible future improvements include:
-- connecting real CCTV or camera streams,
-- integrating with a real database,
-- adding real geolocation services,
-- using live traffic APIs,
-- adding user authentication,
-- deploying to cloud hosting,
-- improving model accuracy with real emergency vehicle datasets.
+- smart city emergency planning,
+- AI-based traffic coordination experiments,
+- rapid prototype demonstrations,
+- public-sector emergency technology research.
 
-## Project Impact
+---
 
-IntelliCross is meant to demonstrate how AI technologies can support smarter emergency response systems. It highlights practical use cases in:
-- urban mobility,
-- smart city infrastructure,
-- emergency dispatch optimization,
-- vehicle prioritization logic,
-- and real-time situational awareness.
+## Deployment and scalability notes
+
+This version is optimized as a prototype / demo environment. It can be extended with:
+
+- real camera feeds and live video streaming,
+- a trained YOLO model on a custom dataset,
+- database-backed alert history and event storage,
+- real intersection control integration,
+- cloud deployment with authentication and role-based access control.
+
+---
+
+## Project impact
+
+The project demonstrates how an AI-enabled traffic command center can help reduce emergency response delays and improve operational awareness. It merges:
+
+- computer vision,
+- emergency operations management,
+- route optimization thinking,
+- healthcare coordination,
+- and urban transportation intelligence.
+
+It is more than a UI mockup; it represents a practical concept for real-world emergency routing and traffic-priority control.
+
+---
 
 ## License
 
-This project is intended for educational and demonstration use. Please check the repository and licensing context before using it for commercial deployment.
+This project is provided for educational, research, and demonstration purposes. You may adapt and expand the system for your own developments.
 
-## Conclusion
+---
 
-IntelliCross is a complete concept prototype for an AI-driven emergency vehicle detection and signal coordination system. It combines a live dashboard, backend inference services, and a training-ready AI pipeline to show how emergency detection can be operationalized in a smart city environment.
+## Contributing
 
-The project demonstrates both the visual interface and the technical backend logic needed to support an intelligent emergency response platform.
+Contributions are welcome for:
+
+- better real-world detection models,
+- improved routing algorithms,
+- more realistic signal logic,
+- richer hospital coordination flows,
+- stronger production architecture and deployment patterns.
+
+---
+
+## Author
+
+Built as a full-stack smart mobility and emergency response demo focused on AI-assisted dispatch coordination.
+
+---
+
+<p align="center">
+  <strong>IntelliCross</strong><br>
+  Smart emergency vehicle detection and response coordination
+</p>
