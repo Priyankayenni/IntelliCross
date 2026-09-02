@@ -1,10 +1,6 @@
 # IntelliCross
 
 <p align="center">
-  <img src="docs/screenshots/live-dashboard.png" alt="Live IntelliCross dashboard" width="1000" />
-</p>
-
-<p align="center">
   <strong>AI-powered emergency vehicle detection and response coordination platform</strong>
 </p>
 
@@ -109,18 +105,6 @@ The app does not just show static information. It behaves like a live operations
 | 6 | Hospital is alerted | Contact information and response coordination are surfaced |
 
 ---
-
-## Screenshots and app previews
-
-<p align="center">
-  <img src="docs/screenshots/live-dashboard.png" alt="Live IntelliCross emergency operations dashboard" width="1000" />
-</p>
-
-<p align="center">
-  <img src="docs/screenshots/live-mobile.png" alt="Live IntelliCross mobile dashboard" width="390" />
-</p>
-
-> These images were captured directly from the running IntelliCross frontend at `http://localhost:5173`. They show the real desktop and mobile dashboard, including vehicle monitoring, route visualization, traffic signals, hospital availability, live roadway feed, and incident timeline.
 
 ---
 
@@ -231,10 +215,6 @@ project/
 │       ├── test_collector.py
 │       ├── test_extractor.py
 │       └── test_integration.py
-├── docs/
-│   └── screenshots/
-│       ├── live-dashboard.png
-│       └── live-mobile.png
 ├── .gitignore
 └── .bolt/
 ```
