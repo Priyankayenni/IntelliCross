@@ -1,0 +1,48 @@
+# Environments and Virtual Environments
+.venv/
+venv/
+backend/venv/
+env/
+ENV/
+
+# Secrets & Environment variables
+.env
+backend/.env
+*.env
+
+# Dependencies & Build artifacts
+node_modules/
+dist/
+build/
+*.egg-info/
+__pycache__/
+*/__pycache__/
+*.pyc
+
+# Database & Backups
+backend/backups/
+*.db
+*.db.bak
+traffic_*.db
+*.sqlite
+*.sqlite3
+
+# Large weights and raw datasets
+*.pt
+*.onnx
+*.engine
+data/raw/
+data/processed/
+data/splits/raw/
+data/splits/processed/
+
+# Videos and temp uploads
+/uploads/
+approach_test.mp4
+*.avi
+*.mov
+backend/uploads/*
+!backend/uploads/ev_simulation.mp4
+
+# Legacy Bolt prototype
+project/

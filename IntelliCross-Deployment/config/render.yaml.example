@@ -1,0 +1,61 @@
+services:
+  - type: web
+    name: intellicross-backend
+    runtime: python
+    runtimeVersion: 3.11
+    
+    # Repository setup
+    repo: https://github.com/your-username/IntelliCross
+    branch: main
+    rootDir: backend
+    
+    # Build and deploy
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    
+    # Environment
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: intellicross
+          property: connectionString
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+    
+    # Scaling
+    plan: free  # or pro/enterprise
+    numInstances: 1
+    
+    # Health check
+    healthCheckPath: /health
+    
+    # Auto-scaling
+    autoDeploy: true
+    
+    # Regions
+    region: oregon
+
+# Database (optional)
+databases:
+  - name: intellicross
+    engine: postgres
+    databaseName: intellicross
+    user: postgres
+    region: oregon
+
+# Notes:
+# - Replace github-username with your actual GitHub username
+# - Set environment variables in Render dashboard
+# - Free plan includes 750 hours/month free
+# - numInstances: 1 for free, increase for production
+# - Upgrade plan for better performance and scaling

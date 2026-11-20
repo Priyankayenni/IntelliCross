@@ -1,0 +1,12 @@
+{
+  "name": "intellicross",
+  "version": "4.0.0",
+  "private": true,
+  "description": "Metropolitan-Scale Intelligent Traffic Orchestration Platform",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "install:frontend": "npm --prefix frontend install"
+  }
+}

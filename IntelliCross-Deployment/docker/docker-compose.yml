@@ -1,0 +1,106 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: intellicross-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: intellicross
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - intellicross-network
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: intellicross-backend
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/intellicross
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_KEY: ${SUPABASE_KEY:-}
+      ENVIRONMENT: development
+      DEBUG: "true"
+      SECRET_KEY: dev-secret-key-not-secure
+    ports:
+      - "8000:10000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:10000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - intellicross-network
+
+  # Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: intellicross-frontend
+    environment:
+      VITE_API_URL: http://localhost:8000
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-}
+      VITE_SUPABASE_KEY: ${VITE_SUPABASE_KEY:-}
+      VITE_ENVIRONMENT: development
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+    networks:
+      - intellicross-network
+
+  # Redis Cache (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: intellicross-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - intellicross-network
+
+volumes:
+  postgres_data:
+
+networks:
+  intellicross-network:
+    driver: bridge
+
+# Usage:
+# docker-compose up                    # Start all services
+# docker-compose down                  # Stop all services
+# docker-compose logs -f backend       # View backend logs
+# docker-compose logs -f frontend      # View frontend logs
+# docker-compose ps                    # Show running services
+#
+# Access:
+# Frontend: http://localhost:3000
+# Backend:  http://localhost:8000
+# Database: postgresql://postgres:postgres@localhost:5432/intellicross
+#
+# Note: Set environment variables in .env file
